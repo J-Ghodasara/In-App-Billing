@@ -15,33 +15,33 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
-    lateinit var billingClient:BillingClient
-    var hashMap:HashMap<String,String> = HashMap()
-    var hashMap2:HashMap<String,String> = HashMap()
+    lateinit var billingClient: BillingClient
+    var hashMap: HashMap<String, String> = HashMap()
+    var hashMap2: HashMap<String, String> = HashMap()
 
     override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
             for (purchase in purchases) {
 
 
-                billingClient.consumeAsync(purchase.purchaseToken) { responseCode, purchaseToken -> Toast.makeText(this,"Consumed", Toast.LENGTH_LONG).show() }
+                billingClient.consumeAsync(purchase.purchaseToken) { responseCode, purchaseToken -> Toast.makeText(this, "Consumed", Toast.LENGTH_LONG).show() }
             }
         } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
-            Toast.makeText(this,"Error",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
         } else {
 
         }
     }
 
-    var list:ArrayList<String> = ArrayList()
+    var list: ArrayList<String> = ArrayList()
 
 
-    fun queryskudetails(){
+    fun queryskudetails() {
 
-        billingClient=BillingClient.newBuilder(this).setListener(this).build()
-        billingClient.startConnection(object: BillingClientStateListener {
+        billingClient = BillingClient.newBuilder(this).setListener(this).build()
+        billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
-                Log.i("Disconnected","billing client")
+                Log.i("Disconnected", "billing client")
             }
 
             override fun onBillingSetupFinished(responseCode: Int) {
@@ -51,17 +51,16 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     val skulist = ArrayList<String>()
                     skulist.add("subscribe")
 
-                    val params= SkuDetailsParams.newBuilder()
+                    val params = SkuDetailsParams.newBuilder()
                     params.setSkusList(skulist).setType(BillingClient.SkuType.SUBS)
-                    billingClient.querySkuDetailsAsync(params.build(),{
-                        responseCode, skuDetailsList ->
+                    billingClient.querySkuDetailsAsync(params.build(), { responseCode, skuDetailsList ->
 
-                        if(responseCode== BillingClient.BillingResponse.OK && skuDetailsList !=null){
+                        if (responseCode == BillingClient.BillingResponse.OK && skuDetailsList != null) {
                             for (skuDetails in skuDetailsList) {
                                 val sku = skuDetails.sku
                                 val price = skuDetails.price
-                                Log.i("skudetails",sku)
-                                Log.i("skuprice",price)
+                                Log.i("skudetails", sku)
+                                Log.i("skuprice", price)
                                 hashMap[sku] = price
 
 
@@ -78,9 +77,6 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -93,7 +89,6 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         subscribe.setOnClickListener(View.OnClickListener {
 
 
-
             val flowParams = BillingFlowParams.newBuilder()
                     .setSku("subscribe")
                     .setType(BillingClient.SkuType.SUBS) // SkuType.SUB for subscription
@@ -102,11 +97,11 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
             val responseCode = billingClient.launchBillingFlow(this, flowParams)
         })
 
-        var layman:RecyclerView.LayoutManager= LinearLayoutManager(this,LinearLayout.VERTICAL,false)
+        var layman: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
-        var adapter=myadapter(this,list)
-        recyclerView.adapter=adapter
-        recyclerView.layoutManager=layman
+        var adapter = myadapter(this, list)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = layman
 
 
     }
