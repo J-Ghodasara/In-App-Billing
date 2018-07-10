@@ -22,14 +22,14 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
             for (purchase in purchases) {
-                // handlePurchase(purchase)
+
 
                 billingClient.consumeAsync(purchase.purchaseToken) { responseCode, purchaseToken -> Toast.makeText(this,"Consumed", Toast.LENGTH_LONG).show() }
             }
         } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
-            // Handle an error caused by a user cancelling the purchase flow.
+            Toast.makeText(this,"Error",Toast.LENGTH_LONG).show()
         } else {
-            // Handle any other error codes.
+
         }
     }
 
@@ -71,12 +71,7 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     })
                 }
 
-//
-//                if(responseCode == BillingClient.BillingResponse.OK){
-//                    Toast.makeText(context,"setup finished",Toast.LENGTH_LONG).show()
-//
-//
-//                }
+
             }
 
         })

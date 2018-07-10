@@ -28,9 +28,9 @@ class myadapter(var context:Context,var array:ArrayList<String>): RecyclerView.A
                         billingClient.consumeAsync(purchase.purchaseToken) { responseCode, purchaseToken -> Toast.makeText(context,"Consumed",Toast.LENGTH_LONG).show() }
             }
         } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
-            // Handle an error caused by a user cancelling the purchase flow.
+            Toast.makeText(context,"Error",Toast.LENGTH_LONG).show()
         } else {
-            // Handle any other error codes.
+
         }
     }
 
@@ -46,23 +46,7 @@ class myadapter(var context:Context,var array:ArrayList<String>): RecyclerView.A
 
         return Vholder(v)
     }
-//    fun startconnection(run:() -> Unit){
-//        billingClient.startConnection(object : BillingClientStateListener {
-//            override fun onBillingSetupFinished(responseCode: Int) {
-//                if (responseCode == BillingClient.BillingResponse.OK) {
-//                    // isBillingConnected = true
-//                    // The billing client is ready. You can query purchases here.
-//                    run()
-//                }
-//            }
-//
-//            override fun onBillingServiceDisconnected() {
-//                // Try to restart the connection on the next request to
-//                // Google Play by calling the startConnection() method.
-//                // isBillingConnected = false
-//            }
-//        })
-//    }
+
     fun queryskudetails(){
 
         billingClient=BillingClient.newBuilder(context).setListener(this).build()
@@ -100,12 +84,7 @@ class myadapter(var context:Context,var array:ArrayList<String>): RecyclerView.A
                     })
                 }
 
-//
-//                if(responseCode == BillingClient.BillingResponse.OK){
-//                    Toast.makeText(context,"setup finished",Toast.LENGTH_LONG).show()
-//
-//
-//                }
+
             }
 
         })
@@ -142,14 +121,7 @@ class myadapter(var context:Context,var array:ArrayList<String>): RecyclerView.A
 
         })
     }
-//    fun executeRequest(run: () -> Unit) {
-//        if (billingClient.isReady) {
-//            run()
-//        }
-//        else {
-//            startconnection(run)
-//        }
-//    }
+
 
 
 
